@@ -2622,6 +2622,11 @@ static int decode_slice(struct AVCodecContext *avctx, void *arg)
 
         for (;;) {
             // START_TIMER
+        	int trailings_before = ff_ctz(sl->cabac.low);
+        	int bitstream_start = sl->cabac.bytestream;
+        	int cur_mbx = sl->mb_x;
+			int cur_mby = sl->mb_y;
+
             int ret, eos;
             if (sl->mb_x + sl->mb_y * h->mb_width >= sl->next_slice_idx) {
                 av_log(h->avctx, AV_LOG_ERROR, "Slice overlaps with next at %d\n",
@@ -2680,6 +2685,13 @@ static int decode_slice(struct AVCodecContext *avctx, void *arg)
                         predict_field_decoding_flag(h, sl);
                 }
             }
+
+            int cur_MBSize = sl->cabac.bytestream - bitstream_start;
+            cur_MBSize *= 8;
+            int trailings_after = ff_ctz(sl->cabac.low);
+            cur_MBSize += (trailings_after - trailings_before);
+            fprintf(stderr, "MB %d %d: size: %d\n", cur_mbx, cur_mby, cur_MBSize);
+
 
             if (eos || sl->mb_y >= h->mb_height) {
                 ff_tlog(h->avctx, "slice end %d %d\n",
