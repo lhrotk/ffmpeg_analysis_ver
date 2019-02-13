@@ -1013,6 +1013,10 @@ static int h264_decode_frame(AVCodecContext *avctx, void *data,
         /* Wait for second field. */
         if (h->next_output_pic) {
             ret = finalize_frame(h, pict, h->next_output_pic, got_frame);
+            if(pict->qscale_table==NULL){
+            	pict->qscale_table = (int8_t*)malloc(h->mb_num*sizeof(int8_t));
+            }
+            memcpy(pict->qscale_table, h->cur_pic_ptr->qscale_table, h->mb_num*sizeof(int8_t));
             if (ret < 0)
                 return ret;
         }
