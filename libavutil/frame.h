@@ -586,6 +586,7 @@ typedef struct AVFrame {
      */
     attribute_deprecated
     int8_t *qscale_table;
+    int32_t *mb_type;
     /**
      * QP store stride
      */

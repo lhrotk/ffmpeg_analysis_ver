@@ -1016,7 +1016,11 @@ static int h264_decode_frame(AVCodecContext *avctx, void *data,
             if(pict->qscale_table==NULL){
             	pict->qscale_table = (int8_t*)malloc(h->mb_num*sizeof(int8_t));
             }
+            if(pict->mb_type==NULL){
+                pict->mb_type = (int32_t*)malloc(h->mb_num*sizeof(int32_t));
+            }
             memcpy(pict->qscale_table, h->cur_pic_ptr->qscale_table, h->mb_num*sizeof(int8_t));
+            memcpy(pict->mb_type, h->cur_pic_ptr->mb_type, h->mb_num*sizeof(int32_t));
             if (ret < 0)
                 return ret;
         }
