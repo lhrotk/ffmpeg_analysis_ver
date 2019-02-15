@@ -2690,7 +2690,7 @@ static int decode_slice(struct AVCodecContext *avctx, void *arg)
             cur_MBSize *= 8;
             int trailings_after = ff_ctz(sl->cabac.low);
             cur_MBSize += (trailings_after - trailings_before);
-            fprintf(stderr, "MB %d %d: size: %d\n", cur_mbx, cur_mby, cur_MBSize);
+            fprintf(stdout, "MB %d %d: size: %d\n", cur_mbx, cur_mby, cur_MBSize);
 
 
             if (eos || sl->mb_y >= h->mb_height) {
